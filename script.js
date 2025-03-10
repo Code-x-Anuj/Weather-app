@@ -1,14 +1,11 @@
 fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=nature")
     .then(res => res.json())
     .then(data => {
-        console.log(data.urls.full)
-        console.log(data.user.name)
         document.body.style.backgroundImage = `url(${data.urls.full})`
 		document.getElementById("author").textContent = `By:- ${data.user.name} `
     })
     .catch(err => {
         const defaultImage = "https://images.unsplash.com/photo-1544084944-15269ec7b5a0?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxNDI0NzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE3NDE1NDAxMjR8&ixlib=rb-4.0.3&q=85" ;
-        console.log(defaultImage)
         document.body.style.backgroundImage = `url("${defaultImage}")`
         document.getElementById("author").textContent = "By:- Sasha Freemind"
     })
@@ -46,5 +43,32 @@ function getCurrentTime() {
 getCurrentTime(); // Initial call to display time immediately
 setInterval(getCurrentTime, 1000); // Update every second
 
-  
+navigator.geolocation.getCurrentPosition((position) => {
+    // console.log(position);
+    // console.log(position.coords.latitude)
+    // console.log(position.coords.longitude)
+    const myLatitude = position.coords.latitude;
+    const myLongitude = position.coords.longitude;
+    
+    fetch(`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${myLatitude}&lon=${myLongitude}&units=metric`)
+    .then(res => {
+        if(!res.ok){
+            throw Error ("Sorry! weather data N/A")
+        }
+        return res.json();
+    })
+    .then(data => {console.log(data)
+        console.log(data.name)
+        // console.log(data.weather[0].icon)
+        const imageUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+        // console.log(imageUrl)
+        let temprature = Math.round(data.main.temp)
+        document.getElementById("weather-top").innerHTML = `<img src = ${imageUrl} />  ${temprature}° `
+        document.getElementById("myPlace").innerHTML = `  <img src = "gps.png" /> ${data.name} `
+
+    })
+    .catch(err => console.error(err))
+    
+});
+
   
