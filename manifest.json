@@ -1,0 +1,13 @@
+{
+    "manifest_version": 3,
+    "name": "Personal Dashboard",
+    "version": "1.0.1",
+    "description": "My Weather app",
+    "action": {
+        "default_icon": "myicon.png"
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": ["tabs"]
+}
